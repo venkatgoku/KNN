@@ -1,0 +1,53 @@
+K NEAREST NEIGHBOURS.
+
+
+Here we take a train_set(training data) consisting of 4 rows and we are testing for two rows(test_set).We have chosen the k to 
+be 3.This is a  arbitrary number and should be less than the no of rows of training set. This means that we are taking 
+3 nearest neighbours.
+The test_set is in the outer loop as we are comparing each test_row with all the rows of of train_set
+
+If we call the distance_col outside, then we get all 8 values of distance,but we want for the 1st test row and then for the
+test_row. After we get the distance values  for the first test_row(We get 4 values), we append it to distance_col. 
+Then we are making a copy of the four values in the variable distance_col_copy and then we are sorting the copy.
+This is what happens in the first iteration of train_row
+Now for the second iteration of  test_row we get another 4 values(This time for the row [9,2,8]  )
+We  get 4 values each time not because of the length of train_row but because of the length of train_set.
+
+
+train_set=[[2,5,6,4],[7,8,6,3],[9,5,1,7],[5,3,6,7]]
+test_set=[[1,7,2],[9,2,8]]
+k=3
+for test_row in test_set:
+    distance_col=[]
+    
+    #print(test_row)
+    for train_row in train_set:
+        #print(train_row)
+        distance=0
+        
+        for col in range(len(test_row)):
+            sqt=((train_row[col])-(test_row[col]))**2
+            
+            
+            distance=distance+sqt
+            #print(distance)
+            
+        
+        
+        distance=math.sqrt(distance)
+        #print(distance)
+        distance_col.append(distance)
+    distance_col_copy=distance_col.copy()
+    distance_col_copy.sort()
+    
+    # After sorting we iterate through the sorted distance and find the index of the first 3(as k=3)  sorted values in the  unsorted distance  
+   
+    dist_indices=[distance_col.index(ind_val) for ind_val in distance_col_copy]
+    dist_indices=dist_indices[0:k]
+    #print(dist_indices)
+    # With the help of this index we are going to that particular row and column in the training set and adding up all..
+    #..the three values and dividing by 3 to get the predicted value
+    
+    prediction=sum([train_set[i][len(train_set[i])-1] for i in dist_indices])/k
+    print(prediction)
+    print(test_row)
